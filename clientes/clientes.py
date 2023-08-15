@@ -6,20 +6,14 @@ import re
 bd = ler_arquivo()
 
 
-class ClienteJaCadastrado(Exception):
-    def __init__(self, mensagem: str = "Cliente já cadastrado"):
-        self._erro = mensagem
-        super().__init__(self._erro)
-
-
-class ClienteNaoLoacalizado(Exception):
-    def __init__(self, mensagem: str = "Cliente não localizado"):
+class ExcecaoClientes(Exception):
+    def __init__(self, mensagem: str):
         self._erro = mensagem
         super().__init__(self._erro)
 
 
 class Clientes:
-    def __init__(self, cpf: str = None):
+    def __init__(self):
         self._nome = None
         self._cpf = None
         self._data_nascimento = None
@@ -62,13 +56,13 @@ class Clientes:
             self.data_nascimento = cliente["data_nascimento"]
             return {"cpf": cpf, **cliente}
         else:
-            raise ClienteNaoLoacalizado()
+            raise ExcecaoClientes("Cliente não localizado.")
 
     def cadastrar_cliente(self, nome: str, cpf: str, data_nascimento: str) -> str:
         print(bd)
         cpf = self.valida_cpf(cpf)
         if cpf in bd["bd_clientes"]:
-            raise ClienteJaCadastrado()
+            raise ExcecaoClientes("Cliente já cadastrado")
         else:
             bd["bd_clientes"][cpf] = {
                 "nome": nome,
@@ -80,8 +74,8 @@ class Clientes:
             self.buscar_cliente(cpf)
             return "Cliente cadastrado com sucesso"
 
-    def relatorio_clientes(self) -> None:
+    def relatorio_clientes(self) -> list[dict[str,str]]:
         clientes = [{"cpf": key, **value} for key, value in bd["bd_clientes"].items()]
         funcao_sort = lambda x: x["nome"]
         clientes.sort(key=funcao_sort)
-        [print(cliente) for cliente in clientes]
+        return clientes
