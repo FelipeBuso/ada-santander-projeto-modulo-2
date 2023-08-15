@@ -20,7 +20,7 @@ class Clientes:
 
     def valida_cpf(self, cpf):
         cpf = re.sub(r"[!@#$%^&*-. ]", "", str(cpf)).zfill(11)
-        if not cpf.isdigit():
+        if not cpf.isdigit() or len(cpf) > 11:
             raise ValueError("CPF inválido")
         return cpf
 
@@ -48,7 +48,7 @@ class Clientes:
 
     data_nascimento = property(_get_data_nascimento, _set_data_nascimento)
 
-    def buscar_cliente(self, cpf: str) -> dict:
+    def buscar_cliente(self, cpf: str) -> dict[str,str]:
         if cpf in bd["bd_clientes"] and bd["bd_clientes"][cpf]:
             cliente = bd["bd_clientes"][cpf]
             self.nome = cliente["nome"]
@@ -66,9 +66,7 @@ class Clientes:
         else:
             bd["bd_clientes"][cpf] = {
                 "nome": nome,
-                "data_nascimento": datetime.strptime(
-                    data_nascimento, "%d/%m/%Y"
-                ).isoformat(),
+                "data_nascimento": data_nascimento,
             }
             salvar_arquivo(bd)
             self.buscar_cliente(cpf)

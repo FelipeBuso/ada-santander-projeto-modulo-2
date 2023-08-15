@@ -1,35 +1,71 @@
 {
-  "bd_clientes": {
-    "55702383524": {
-      "nome": "Anderson",
-      "data_nascimento": "2002-04-01T00:00:00"
+    "bd_clientes": {
+        "55702383524": {
+            "nome": "Anderson",
+            "data_nascimento": "2002/04/01"
+        },
+        "77542415603": {
+            "nome": "Raquel",
+            "data_nascimento": "2000/01/01"
+        },
+        "18596332499": {
+            "nome": "Maria",
+            "data_nascimento": "1990/05/23"
+        },
+        "12345678911": {
+            "nome": "Fernanda",
+            "data_nascimento": "1991/10/22"
+        },
+        "17898516544": {
+            "nome": "Pedro",
+            "data_nascimento": "1993/09/15"
+        },
+        "17898516555": {
+            "nome": "Luiz",
+            "data_nascimento": "1993/10/14"
+        },
+        "17898516566": {
+            "nome": "Luiza",
+            "data_nascimento": "1993/10/17"
+        },
+        "17898516588": {
+            "nome": "Rebeca",
+            "data_nascimento": "1993/10/15"
+        },
+        "13598516588": {
+            "nome": "Rubens",
+            "data_nascimento": "1995/01/15"
+        },
+        "13458516588": {
+            "nome": "Roberto",
+            "data_nascimento": "1999/03/15"
+        },
+        "13458516388": {
+            "nome": "Roberta",
+            "data_nascimento": "12/05/2000"
+        }
     },
-    "77542415603": {
-      "nome": "Raquel",
-      "data_nascimento": "2000-01-01T00:00:00"
+    "bd_laboratorios": {
+        "58066331000104": {
+            "nome": "EMS",
+            "endereco": "Rua Um",
+            "telefone": "1144445555",
+            "cidade": "São Paulo",
+            "estado": "SP"
+        },
+        "75380556000150": {
+            "nome": "Aché",
+            "endereco": "Rua Dois",
+            "telefone": "1122223333",
+            "cidade": "Belo Horizonte",
+            "estado": "MG"
+        },
+        "42224316000107": {
+            "nome": "Medley",
+            "endereco": "Rua Três",
+            "telefone": "1166667777",
+            "cidade": "Cascavel",
+            "estado": "PR"
+        }
     }
-  },
-  "bd_laboratorios": {
-    "58066331000104": {
-      "nome": "EMS",
-      "endereco": "Rua Um",
-      "telefone": "1144445555",
-      "cidade": "São Paulo",
-      "estado": "SP"
-    },
-    "75380556000150": {
-      "nome": "Aché",
-      "endereco": "Rua Dois",
-      "telefone": "1122223333",
-      "cidade": "Belo Horizonte",
-      "estado": "MG"
-    },
-    "42224316000107": {
-      "nome": "Medley",
-      "endereco": "Rua Três",
-      "telefone": "1166667777",
-      "cidade": "Cascavel",
-      "estado": "PR"
-    }
-  }
 }
