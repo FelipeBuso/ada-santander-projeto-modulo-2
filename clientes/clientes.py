@@ -64,7 +64,11 @@ class Clientes:
     def cadastrar_cliente(self, nome: str, cpf: str, data_nascimento: str) -> str:
         dados_bd = ler_arquivo()
         cpf = self.valida_cpf(cpf)
-        if cpf in dados_bd["bd_clientes"] and dados_bd["bd_clientes"][cpf]["ativo"]:
+        if (
+            cpf in dados_bd["bd_clientes"]
+            and dados_bd["bd_clientes"][cpf]
+            and dados_bd["bd_clientes"][cpf]["ativo"]
+        ):
             raise ExcecaoClientes("Cliente já cadastrado")
         elif (
             cpf in dados_bd["bd_clientes"] and not dados_bd["bd_clientes"][cpf]["ativo"]
@@ -80,6 +84,25 @@ class Clientes:
             salvar_arquivo(dados_bd)
             self.buscar_cliente(cpf)
             return "Cliente cadastrado com sucesso"
+
+    def excluir_cliente(
+        self,
+        cpf: str,
+    ) -> str:
+        dados_bd = ler_arquivo()
+        cpf = self.valida_cpf(cpf)
+        if cpf not in dados_bd["bd_clientes"]:
+            raise ExcecaoClientes("Cliente não localizado")
+        elif (
+            cpf in dados_bd["bd_clientes"]
+            and dados_bd["bd_clientes"][cpf]
+            and dados_bd["bd_clientes"][cpf]["ativo"]
+        ):
+            dados_bd["bd_clientes"][cpf]["ativo"] = True
+            salvar_arquivo(dados_bd)
+            return "Cliente excluido"
+        else:
+            pass
 
     def relatorio_clientes(self) -> List[Dict[str, str]]:
         dados_bd = ler_arquivo()
