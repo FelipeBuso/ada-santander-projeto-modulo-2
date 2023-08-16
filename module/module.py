@@ -1,13 +1,13 @@
 import json
 
 
-def ler_arquivo(nome_arquivo="./banco_dados/db.json") -> None:
+def ler_arquivo(nome_arquivo="./banco_dados/db.json") -> dict:
     try:
         with open(nome_arquivo, "r") as arquivo:
             return json.loads(arquivo.read())
     except Exception as error:
         print(str(error))
-        return None
+        return {}
 
 
 def salvar_arquivo(novo_arquivo: dict, nome_arquivo="./banco_dados/db.json") -> None:
