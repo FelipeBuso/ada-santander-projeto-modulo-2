@@ -3,9 +3,6 @@ from datetime import datetime, date
 import re
 
 
-bd = ler_arquivo()
-
-
 class ExcecaoClientes(Exception):
     def __init__(self, mensagem: str):
         self._erro = mensagem
@@ -49,8 +46,9 @@ class Clientes:
     data_nascimento = property(_get_data_nascimento, _set_data_nascimento)
 
     def buscar_cliente(self, cpf: str) -> dict[str,str]:
-        if cpf in bd["bd_clientes"] and bd["bd_clientes"][cpf]:
-            cliente = bd["bd_clientes"][cpf]
+        dados_bd = ler_arquivo()
+        if cpf in dados_bd["bd_clientes"] and dados_bd["bd_clientes"][cpf]:
+            cliente = dados_bd["bd_clientes"][cpf]
             self.nome = cliente["nome"]
             self.cpf = cpf
             self.data_nascimento = cliente["data_nascimento"]
@@ -59,21 +57,22 @@ class Clientes:
             raise ExcecaoClientes("Cliente não localizado.")
 
     def cadastrar_cliente(self, nome: str, cpf: str, data_nascimento: str) -> str:
-        print(bd)
+        dados_bd = ler_arquivo()
         cpf = self.valida_cpf(cpf)
-        if cpf in bd["bd_clientes"]:
+        if cpf in dados_bd["bd_clientes"]:
             raise ExcecaoClientes("Cliente já cadastrado")
         else:
-            bd["bd_clientes"][cpf] = {
+            dados_bd["bd_clientes"][cpf] = {
                 "nome": nome,
                 "data_nascimento": data_nascimento,
             }
-            salvar_arquivo(bd)
+            salvar_arquivo(dados_bd)
             self.buscar_cliente(cpf)
             return "Cliente cadastrado com sucesso"
 
     def relatorio_clientes(self) -> list[dict[str,str]]:
-        clientes = [{"cpf": key, **value} for key, value in bd["bd_clientes"].items()]
+        dados_bd = ler_arquivo()
+        clientes = [{"cpf": key, **value} for key, value in dados_bd["bd_clientes"].items()]
         funcao_sort = lambda x: x["nome"]
         clientes.sort(key=funcao_sort)
         return clientes
