@@ -1,82 +1,117 @@
 {
-    "bd_clientes": {
-        "55702383524": {
-            "nome": "Anderson",
-            "data_nascimento": "01/04/2002",
-            "ativo": true
-        },
-        "77542415603": {
-            "nome": "Raquel",
-            "data_nascimento": "01/01/2000",
-            "ativo": true
-        },
-        "18596332499": {
-            "nome": "Maria",
-            "data_nascimento": "23/05/1990",
-            "ativo": true
-        },
-        "12345678911": {
-            "nome": "Fernanda",
-            "data_nascimento": "22/10/1991",
-            "ativo": true
-        },
-        "17898516544": {
-            "nome": "Pedro",
-            "data_nascimento": "15/09/1993",
-            "ativo": true
-        },
-        "17898516555": {
-            "nome": "Luiz",
-            "data_nascimento": "14/10/1993",
-            "ativo": true
-        },
-        "17898516566": {
-            "nome": "Luiza",
-            "data_nascimento": "17/10/1993",
-            "ativo": true
-        },
-        "17898516588": {
-            "nome": "Rebeca",
-            "data_nascimento": "15/10/1993",
-            "ativo": true
-        },
-        "13598516588": {
-            "nome": "Rubens",
-            "data_nascimento": "15/01/1995",
-            "ativo": true
-        },
-        "13458516588": {
-            "nome": "Roberto",
-            "data_nascimento": "15/03/1999",
-            "ativo": true
-        },
-        "13458516388": {
-            "nome": "Roberta",
-            "data_nascimento": "12/05/2000",
-            "ativo": false
-        }
+  "bd_clientes": {
+    "55702383524": {
+      "nome": "Anderson",
+      "data_nascimento": "01/04/2002",
+      "ativo": true
     },
-    "bd_laboratorios": {
-        "58066331000104": {
-            "nome": "EMS",
-            "endereco": "Rua Um",
-            "telefone": "1144445555",
-            "cidade": "São Paulo",
-            "estado": "SP"
-        },
-        "75380556000150": {
-            "nome": "Aché",
-            "endereco": "Rua Dois",
-            "telefone": "1122223333",
-            "cidade": "Belo Horizonte",
-            "estado": "MG"
-        },
-        "42224316000107": {
-            "nome": "Medley",
-            "endereco": "Rua Três",
-            "telefone": "1166667777",
-            "cidade": "Cascavel",
-            "estado": "PR"
-        }
+    "77542415603": {
+      "nome": "Raquel",
+      "data_nascimento": "01/01/2000",
+      "ativo": true
+    },
+    "18596332499": {
+      "nome": "Maria",
+      "data_nascimento": "23/05/1990",
+      "ativo": true
+    },
+    "12345678911": {
+      "nome": "Fernanda",
+      "data_nascimento": "22/10/1991",
+      "ativo": true
+    },
+    "17898516544": {
+      "nome": "Pedro",
+      "data_nascimento": "15/09/1993",
+      "ativo": true
+    },
+    "17898516555": {
+      "nome": "Luiz",
+      "data_nascimento": "14/10/1993",
+      "ativo": true
+    },
+    "17898516566": {
+      "nome": "Luiza",
+      "data_nascimento": "17/10/1993",
+      "ativo": true
+    },
+    "17898516588": {
+      "nome": "Rebeca",
+      "data_nascimento": "15/10/1993",
+      "ativo": true
+    },
+    "13598516588": {
+      "nome": "Rubens",
+      "data_nascimento": "15/01/1995",
+      "ativo": true
+    },
+    "13458516588": {
+      "nome": "Roberto",
+      "data_nascimento": "15/03/1999",
+      "ativo": true
+    },
+    "13458516388": {
+      "nome": "Roberta",
+      "data_nascimento": "12/05/2000",
+      "ativo": false
     }
+  },
+  "bd_laboratorios": {
+    "58066331000104": {
+      "nome": "EMS",
+      "endereco": "Rua Um",
+      "telefone": "1144445555",
+      "cidade": "São Paulo",
+      "estado": "SP"
+    },
+    "75380556000150": {
+      "nome": "Aché",
+      "endereco": "Rua Dois",
+      "telefone": "1122223333",
+      "cidade": "Belo Horizonte",
+      "estado": "MG"
+    },
+    "42224316000107": {
+      "nome": "Medley",
+      "endereco": "Rua Três",
+      "telefone": "1166667777",
+      "cidade": "Cascavel",
+      "estado": "PR"
+    },
+    "67736004000103": {
+      "nome": "Cimed",
+      "endereco": "Rua Seis",
+      "telefone": "214321-9876",
+      "cidade": "Rio de Janeiro",
+      "estado": "RJ"
+    }
+  },
+  "bd_medicamentos": {
+    "2": {
+      "nome": "Pasalix Marjan - 20 Drágeas",
+      "principio_ativo": "Passiflora incarnata L",
+      "laboratorio": "67736004000103",
+      "descricao": "Pasalix Marjan - 20 Drágeas é destinado para o tratamento da ansiedade e insônia. É constituído por extratos de três plantas medicinais tradicionalmente usadas de forma isolada: A Passiflora incarnata provoca sedação e diminui a ansiedade. O Crataegus oxyacantha também tem ação sedativa no cérebro. A Salix alba tem ação analgésica, antipirética (controle da febre) e anti-inflamatória (diminui a inflamação). A associação destes 3 extratos fitoterápicos alivia quadros de ansiedade e melhora a qualidade do sono.",
+      "preco": 46.99,
+      "quantidade_estoque": 6.0
+    },
+    "3": {
+      "nome": "Trezor 20mg",
+      "principio_ativo": "Rosuvastatina Calcica",
+      "laboratorio": "75380556000150",
+      "descricao": "Trezor 20mg Aché 30 Comprimidos (rosuvastatina cálcica) é utilizado para auxiliar no tratamento de redução de lipídios do sangue, em especial dos níveis de colesterol, mau colesterol (LDL), ApoB e triglicérides. Utilize de acordo com a prescrição médica.",
+      "preco": 39.95,
+      "quantidade_estoque": 15.0,
+      "necessita_receita": true
+    },
+    "1": {
+      "nome": "Trezor 10mg",
+      "principio_ativo": "Rosuvastatina Calcica",
+      "laboratorio": "75380556000150",
+      "descricao": "Trezor 10mg Aché 60 Comprimidos (rosuvastatina cálcica) é utilizado para auxiliar no tratamento de redução de lipídios do sangue, em especial dos níveis de colesterol, mau colesterol (LDL), ApoB e triglicérides. Utilize de acordo com a prescrição médica.",
+      "preco": 63.01,
+      "quantidade_estoque": 10.0,
+      "necessita_receita": true
+    }
+  }
 }
