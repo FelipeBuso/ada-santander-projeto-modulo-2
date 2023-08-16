@@ -2,47 +2,58 @@
     "bd_clientes": {
         "55702383524": {
             "nome": "Anderson",
-            "data_nascimento": "2002/04/01"
+            "data_nascimento": "01/04/2002",
+            "ativo": true
         },
         "77542415603": {
             "nome": "Raquel",
-            "data_nascimento": "2000/01/01"
+            "data_nascimento": "01/01/2000",
+            "ativo": true
         },
         "18596332499": {
             "nome": "Maria",
-            "data_nascimento": "1990/05/23"
+            "data_nascimento": "23/05/1990",
+            "ativo": true
         },
         "12345678911": {
             "nome": "Fernanda",
-            "data_nascimento": "1991/10/22"
+            "data_nascimento": "22/10/1991",
+            "ativo": true
         },
         "17898516544": {
             "nome": "Pedro",
-            "data_nascimento": "1993/09/15"
+            "data_nascimento": "15/09/1993",
+            "ativo": true
         },
         "17898516555": {
             "nome": "Luiz",
-            "data_nascimento": "1993/10/14"
+            "data_nascimento": "14/10/1993",
+            "ativo": true
         },
         "17898516566": {
             "nome": "Luiza",
-            "data_nascimento": "1993/10/17"
+            "data_nascimento": "17/10/1993",
+            "ativo": true
         },
         "17898516588": {
             "nome": "Rebeca",
-            "data_nascimento": "1993/10/15"
+            "data_nascimento": "15/10/1993",
+            "ativo": true
         },
         "13598516588": {
             "nome": "Rubens",
-            "data_nascimento": "1995/01/15"
+            "data_nascimento": "15/01/1995",
+            "ativo": true
         },
         "13458516588": {
             "nome": "Roberto",
-            "data_nascimento": "1999/03/15"
+            "data_nascimento": "15/03/1999",
+            "ativo": true
         },
         "13458516388": {
             "nome": "Roberta",
-            "data_nascimento": "12/05/2000"
+            "data_nascimento": "12/05/2000",
+            "ativo": false
         }
     },
     "bd_laboratorios": {
