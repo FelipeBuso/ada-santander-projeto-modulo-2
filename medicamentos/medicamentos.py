@@ -19,33 +19,61 @@ class Medicamentos:
         self._preco = None
         self._quantidade_estoque = None
 
-    @property
-    def id(self) -> int:
+    def _get_id(self) -> int:
         return self._id
 
-    @property
-    def nome(self) -> str:
+    def _set_id(self, id: str) -> None:
+        self._id = id
+
+    id = property(_get_id, _set_id)
+
+    def _get_nome(self) -> str:
         return self._nome
 
-    @property
-    def principio_ativo(self) -> str:
+    def _set_nome(self, nome: str) -> None:
+        self._nome = nome
+
+    nome = property(_get_nome, _set_nome)
+
+    def _get_principio_ativo(self) -> str:
         return self.__principio_ativo
 
-    @property
-    def laboratorio(self) -> str:
+    def _set_principio_ativo(self, principio_ativo: str) -> None:
+        self._principio_ativo = principio_ativo
+
+    principio_ativo = property(_get_principio_ativo, _set_principio_ativo)
+
+    def _get_laboratorio(self) -> str:
         return self._laboratorio
 
-    @property
-    def descricao(self) -> str:
+    def _set_laboratorio(self, laboratorio: str) -> None:
+        self._laboratorio = laboratorio
+
+    laboratorio = property(_get_laboratorio, _set_laboratorio)
+
+    def _get_descricao(self) -> str:
         return self._descricao
 
-    @property
-    def preco(self) -> float:
+    def _set_descricao(self, descricao: str) -> None:
+        self._descricao = descricao
+
+    descricao = property(_get_descricao, _set_descricao)
+
+    def _get_preco(self) -> float:
         return self._preco
 
-    @property
-    def quantidade_estoque(self) -> float:
+    def _set_preco(self, preco: float) -> None:
+        self._preco = preco
+
+    preco = property(_get_preco, _set_preco)
+
+    def _get_quantidade_estoque(self) -> float:
         return self._quantidade_estoque
+
+    def _set_quantidade_estoque(self, quantidade_estoque: float) -> None:
+        self._quantidade_estoque = quantidade_estoque
+
+    quantidade_estoque = property(_get_quantidade_estoque, _set_quantidade_estoque)
 
     def cadastrar_medicamento(
         self,
@@ -79,6 +107,13 @@ class Medicamentos:
         dados_bd = ler_arquivo()
         dados_medicamentos = dados_bd["bd_medicamentos"]
         if id in dados_medicamentos and dados_medicamentos[id]:
+            self.id = id
+            self.nome = dados_medicamentos[id]["nome"]
+            self.principio_ativo = dados_medicamentos[id]["principio_ativo"]
+            self.laboratorio = dados_medicamentos[id]["laboratorio"]
+            self.descricao = dados_medicamentos[id]["descricao"]
+            self.preco = dados_medicamentos[id]["preco"]
+            self.quantidade_estoque = dados_medicamentos[id]["quantidade_estoque"]
             return dados_medicamentos[id]
         else:
             raise ExcecaoMedicamentos("Medicamento não localizado")
@@ -140,9 +175,11 @@ class MedicamentosQuimioterapicos(Medicamentos):
         self._necessita_receita = None
         super().__init__()
 
-    @property
-    def necessita_receita(self) -> bool:
+    def _get_necessita_receita(self) -> bool:
         return self._necessita_receita
+
+    def _set_necessita_receita(self, necessita_receita: bool) -> None:
+        self._necessita_receita = necessita_receita
 
     def cadastrar_medicamento(
         self,
@@ -173,6 +210,22 @@ class MedicamentosQuimioterapicos(Medicamentos):
         dados_bd["bd_medicamentos"][id_medicamento] = novo_medicamento
         salvar_arquivo(dados_bd)
         return "Medicamento cadastrado com sucesso"
+
+    def buscar_medicamento(self, id: str) -> Dict:
+        dados_bd = ler_arquivo()
+        dados_medicamentos = dados_bd["bd_medicamentos"]
+        if id in dados_medicamentos and dados_medicamentos[id]:
+            self.id = id
+            self.nome = dados_medicamentos[id]["nome"]
+            self.principio_ativo = dados_medicamentos[id]["principio_ativo"]
+            self.laboratorio = dados_medicamentos[id]["laboratorio"]
+            self.descricao = dados_medicamentos[id]["descricao"]
+            self.preco = dados_medicamentos[id]["preco"]
+            self.quantidade_estoque = dados_medicamentos[id]["quantidade_estoque"]
+            self.necessita_receita = dados_medicamentos[id]["necessita_receita"]
+            return dados_medicamentos[id]
+        else:
+            raise ExcecaoMedicamentos("Medicamento não localizado")
 
     def lista_medicamentos(self) -> List[Dict[str, str]]:
         dados_bd = ler_arquivo()
