@@ -85,10 +85,7 @@ class Clientes:
             self.buscar_cliente(cpf)
             return "Cliente cadastrado com sucesso"
 
-    def excluir_cliente(
-        self,
-        cpf: str,
-    ) -> str:
+    def excluir_cliente(self, cpf: str) -> str:
         dados_bd = ler_arquivo()
         cpf = self.valida_cpf(cpf)
         if cpf not in dados_bd["bd_clientes"]:
@@ -96,9 +93,15 @@ class Clientes:
         elif (
             cpf in dados_bd["bd_clientes"]
             and dados_bd["bd_clientes"][cpf]
+            and not dados_bd["bd_clientes"][cpf]["ativo"]
+        ):
+            raise ExcecaoClientes("Cliente já está inativo")
+        elif (
+            cpf in dados_bd["bd_clientes"]
+            and dados_bd["bd_clientes"][cpf]
             and dados_bd["bd_clientes"][cpf]["ativo"]
         ):
-            dados_bd["bd_clientes"][cpf]["ativo"] = True
+            dados_bd["bd_clientes"][cpf]["ativo"] = False
             salvar_arquivo(dados_bd)
             return "Cliente excluido"
         else:
