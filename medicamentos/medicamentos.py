@@ -75,6 +75,14 @@ class Medicamentos:
         salvar_arquivo(dados_bd)
         return "Medicamento cadastrado com sucesso"
 
+    def buscar_medicamento(self, id: str) -> Dict:
+        dados_bd = ler_arquivo()
+        dados_medicamentos = dados_bd["bd_medicamentos"]
+        if id in dados_medicamentos and dados_medicamentos[id]:
+            return dados_medicamentos[id]
+        else:
+            raise ExcecaoMedicamentos("medicamento não localizado")
+
 
 class MedicamentosQuimioterapicos(Medicamentos):
     def __init__(self) -> None:
