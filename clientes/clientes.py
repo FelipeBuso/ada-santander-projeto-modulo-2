@@ -15,6 +15,7 @@ class Clientes:
         self._nome = None
         self._cpf = None
         self._data_nascimento = None
+        self._ativo = None
 
     def valida_cpf(self, cpf):
         cpf = re.sub(r"[!@#$%^&*-. ]", "", str(cpf)).zfill(11)
@@ -30,7 +31,7 @@ class Clientes:
 
     nome = property(_get_nome, _set_nome)
 
-    def _get_cpf(self):
+    def _get_cpf(self) -> str:
         return self._cpf
 
     def _set_cpf(self, cpf: str) -> None:
@@ -38,13 +39,21 @@ class Clientes:
 
     cpf = property(_get_cpf, _set_cpf)
 
-    def _get_data_nascimento(self):
+    def _get_data_nascimento(self) -> str:
         return datetime.strftime(self._data_nascimento, "%d/%m/%Y")
 
     def _set_data_nascimento(self, data_nascimento: date) -> None:
         self._data_nascimento = data_nascimento
 
     data_nascimento = property(_get_data_nascimento, _set_data_nascimento)
+
+    def _get_ativo(self) -> bool:
+        return datetime.strftime(self._ativo, "%d/%m/%Y")
+
+    def _set_ativo(self, ativo: bool) -> None:
+        self._ativo = ativo
+
+    ativo = property(_get_ativo, _set_ativo)
 
     def buscar_cliente(self, cpf: str) -> Dict[str, str]:
         dados_bd = ler_arquivo()
@@ -57,6 +66,7 @@ class Clientes:
             self.nome = cliente["nome"]
             self.cpf = cpf
             self.data_nascimento = cliente["data_nascimento"]
+            self.ativo = cliente["ativo"]
             return {"cpf": cpf, **cliente}
         else:
             raise ExcecaoClientes("Cliente não localizado.")
@@ -80,6 +90,7 @@ class Clientes:
             dados_bd["bd_clientes"][cpf] = {
                 "nome": nome,
                 "data_nascimento": data_nascimento,
+                "ativo": True,
             }
             salvar_arquivo(dados_bd)
             self.buscar_cliente(cpf)
