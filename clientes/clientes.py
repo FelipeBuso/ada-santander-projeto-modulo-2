@@ -1,6 +1,7 @@
 from module.module import ler_arquivo, salvar_arquivo
 from datetime import datetime, date
 import re
+from typing import List, Dict
 
 
 class ExcecaoClientes(Exception):
@@ -45,9 +46,13 @@ class Clientes:
 
     data_nascimento = property(_get_data_nascimento, _set_data_nascimento)
 
-    def buscar_cliente(self, cpf: str) -> dict[str,str]:
+    def buscar_cliente(self, cpf: str) -> Dict[str, str]:
         dados_bd = ler_arquivo()
-        if cpf in dados_bd["bd_clientes"] and dados_bd["bd_clientes"][cpf]:
+        if (
+            cpf in dados_bd["bd_clientes"]
+            and dados_bd["bd_clientes"][cpf]
+            and dados_bd["bd_clientes"][cpf]["ativo"]
+        ):
             cliente = dados_bd["bd_clientes"][cpf]
             self.nome = cliente["nome"]
             self.cpf = cpf
@@ -59,8 +64,14 @@ class Clientes:
     def cadastrar_cliente(self, nome: str, cpf: str, data_nascimento: str) -> str:
         dados_bd = ler_arquivo()
         cpf = self.valida_cpf(cpf)
-        if cpf in dados_bd["bd_clientes"]:
+        if cpf in dados_bd["bd_clientes"] and dados_bd["bd_clientes"][cpf]["ativo"]:
             raise ExcecaoClientes("Cliente já cadastrado")
+        elif (
+            cpf in dados_bd["bd_clientes"] and not dados_bd["bd_clientes"][cpf]["ativo"]
+        ):
+            dados_bd["bd_clientes"][cpf]["ativo"] = True
+            salvar_arquivo(dados_bd)
+            return "Cliente reativado"
         else:
             dados_bd["bd_clientes"][cpf] = {
                 "nome": nome,
@@ -70,9 +81,11 @@ class Clientes:
             self.buscar_cliente(cpf)
             return "Cliente cadastrado com sucesso"
 
-    def relatorio_clientes(self) -> list[dict[str,str]]:
+    def relatorio_clientes(self) -> List[Dict[str, str]]:
         dados_bd = ler_arquivo()
-        clientes = [{"cpf": key, **value} for key, value in dados_bd["bd_clientes"].items()]
+        clientes = [
+            {"cpf": key, **value} for key, value in dados_bd["bd_clientes"].items()
+        ]
         funcao_sort = lambda x: x["nome"]
         clientes.sort(key=funcao_sort)
         return clientes
