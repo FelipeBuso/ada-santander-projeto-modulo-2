@@ -95,6 +95,20 @@ class Medicamentos:
         else:
             raise ExcecaoMedicamentos("Medicamento não localizado")
 
+    def pesquisa_medicamento_laboratorio(
+        self, laboratorio: Laboratorios
+    ) -> List[Dict[str, str]]:
+        dados_bd = ler_arquivo()
+        dados_medicamentos = dados_bd["bd_medicamentos"]
+        medicamentos_localizados = list()
+        for id, medicamento in dados_medicamentos.items():
+            if laboratorio.cnpj == medicamento["laboratorio"]:
+                medicamentos_localizados.append({"id": id, **medicamento})
+        if len(medicamentos_localizados) > 0:
+            return medicamentos_localizados
+        else:
+            raise ExcecaoMedicamentos("Medicamento não localizado")
+
 
 class MedicamentosQuimioterapicos(Medicamentos):
     def __init__(self) -> None:
