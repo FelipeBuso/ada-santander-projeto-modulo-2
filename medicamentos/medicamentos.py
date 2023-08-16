@@ -81,7 +81,7 @@ class Medicamentos:
         if id in dados_medicamentos and dados_medicamentos[id]:
             return dados_medicamentos[id]
         else:
-            raise ExcecaoMedicamentos("medicamento não localizado")
+            raise ExcecaoMedicamentos("Medicamento não localizado")
 
     def pesquisa_medicamento_nome(self, nome: str) -> List[Dict[str, str]]:
         dados_bd = ler_arquivo()
@@ -120,6 +120,19 @@ class Medicamentos:
             return medicamentos_localizados
         else:
             raise ExcecaoMedicamentos("Medicamento não localizado")
+
+    def lista_todos_medicamentos(self) -> List[Dict[str, str]]:
+        dados_bd = ler_arquivo()
+        dados_medicamentos = dados_bd["bd_medicamentos"]
+        lista_medicamentos = [
+            {"id": id, **medicamento} for id, medicamento in dados_medicamentos.items()
+        ]
+        if len(lista_medicamentos) > 0:
+            funcao_sort = lambda x: x["nome"]
+            lista_medicamentos.sort(key=funcao_sort)
+            return lista_medicamentos
+        else:
+            raise ExcecaoMedicamentos("Nenhum medicamento localizado")
 
 
 class MedicamentosQuimioterapicos(Medicamentos):
@@ -161,7 +174,33 @@ class MedicamentosQuimioterapicos(Medicamentos):
         salvar_arquivo(dados_bd)
         return "Medicamento cadastrado com sucesso"
 
+    def lista_medicamentos(self) -> List[Dict[str, str]]:
+        dados_bd = ler_arquivo()
+        dados_medicamentos = dados_bd["bd_medicamentos"]
+        lista_medicamentos_quimioterapicos = [
+            {"id": id, **medicamento}
+            for id, medicamento in dados_medicamentos.items()
+            if "necessita_receita" in medicamento
+        ]
+        if len(lista_medicamentos_quimioterapicos) > 0:
+            return lista_medicamentos_quimioterapicos
+        else:
+            raise ExcecaoMedicamentos("Nenhum medicamento localizado")
+
 
 class MedicamentosFitoterapicos(Medicamentos):
     def __init__(self) -> None:
         super().__init__()
+
+    def lista_medicamentos(self) -> List[Dict[str, str]]:
+        dados_bd = ler_arquivo()
+        dados_medicamentos = dados_bd["bd_medicamentos"]
+        lista_medicamentos_fitoterapicos = [
+            {"id": id, **medicamento}
+            for id, medicamento in dados_medicamentos.items()
+            if not "necessita_receita" in medicamento
+        ]
+        if len(lista_medicamentos_fitoterapicos) > 0:
+            return lista_medicamentos_fitoterapicos
+        else:
+            raise ExcecaoMedicamentos("Nenhum medicamento localizado")
