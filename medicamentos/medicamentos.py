@@ -114,7 +114,10 @@ class Medicamentos:
             self.descricao = dados_medicamentos[id]["descricao"]
             self.preco = dados_medicamentos[id]["preco"]
             self.quantidade_estoque = dados_medicamentos[id]["quantidade_estoque"]
-            return dados_medicamentos[id]
+            response = {
+                "necessita_receita": False,
+                "medicamento": dados_medicamentos[id],
+            }
         else:
             raise ExcecaoMedicamentos("Medicamento não localizado")
 
@@ -223,7 +226,15 @@ class MedicamentosQuimioterapicos(Medicamentos):
             self.preco = dados_medicamentos[id]["preco"]
             self.quantidade_estoque = dados_medicamentos[id]["quantidade_estoque"]
             self.necessita_receita = dados_medicamentos[id]["necessita_receita"]
-            return dados_medicamentos[id]
+            response = {
+                "necessita_receita": dados_medicamentos[id]["necessita_receita"],
+                "medicamento": dados_medicamentos[id],
+            }
+            if dados_medicamentos[id]["necessita_receita"]:
+                response[
+                    "mensagem"
+                ] = f'o medicamento {dados_medicamentos[id]["nome"]} é controlado. Verificou a receita com o cliente?'
+            return response
         else:
             raise ExcecaoMedicamentos("Medicamento não localizado")
 
