@@ -1,6 +1,7 @@
 from module.module import ler_arquivo, salvar_arquivo
 from datetime import datetime, date
 import re
+from typing import List, Dict
 
 
 class ExcecaoClientes(Exception):
@@ -14,6 +15,7 @@ class Clientes:
         self._nome = None
         self._cpf = None
         self._data_nascimento = None
+        self._ativo = True
 
     def valida_cpf(self, cpf):
         cpf = re.sub(r"[!@#$%^&*-. ]", "", str(cpf)).zfill(11)
@@ -29,7 +31,7 @@ class Clientes:
 
     nome = property(_get_nome, _set_nome)
 
-    def _get_cpf(self):
+    def _get_cpf(self) -> str:
         return self._cpf
 
     def _set_cpf(self, cpf: str) -> None:
@@ -37,7 +39,7 @@ class Clientes:
 
     cpf = property(_get_cpf, _set_cpf)
 
-    def _get_data_nascimento(self):
+    def _get_data_nascimento(self) -> str:
         return datetime.strftime(self._data_nascimento, "%d/%m/%Y")
 
     def _set_data_nascimento(self, data_nascimento: date) -> None:
@@ -45,34 +47,82 @@ class Clientes:
 
     data_nascimento = property(_get_data_nascimento, _set_data_nascimento)
 
-    def buscar_cliente(self, cpf: str) -> dict[str,str]:
+    def _get_ativo(self) -> bool:
+        return self._ativo
+
+    def _set_ativo(self, ativo: bool) -> None:
+        self._ativo = ativo
+
+    ativo = property(_get_ativo, _set_ativo)
+
+    def buscar_cliente(self, cpf: str) -> Dict[str, str]:
         dados_bd = ler_arquivo()
-        if cpf in dados_bd["bd_clientes"] and dados_bd["bd_clientes"][cpf]:
-            cliente = dados_bd["bd_clientes"][cpf]
-            self.nome = cliente["nome"]
+        if (
+            cpf in dados_bd["bd_clientes"]
+            and dados_bd["bd_clientes"][cpf]
+            and dados_bd["bd_clientes"][cpf]["ativo"]
+        ):
+            dict_cliente = dados_bd["bd_clientes"][cpf]
+            self.nome = dict_cliente["nome"]
             self.cpf = cpf
-            self.data_nascimento = cliente["data_nascimento"]
-            return {"cpf": cpf, **cliente}
+            self.data_nascimento = dict_cliente["data_nascimento"]
+            self.ativo = dict_cliente["ativo"]
+            return {"cpf": self.cpf, **dict_cliente}
         else:
             raise ExcecaoClientes("Cliente não localizado.")
 
     def cadastrar_cliente(self, nome: str, cpf: str, data_nascimento: str) -> str:
         dados_bd = ler_arquivo()
         cpf = self.valida_cpf(cpf)
-        if cpf in dados_bd["bd_clientes"]:
+        if (
+            cpf in dados_bd["bd_clientes"]
+            and dados_bd["bd_clientes"][cpf]
+            and dados_bd["bd_clientes"][cpf]["ativo"]
+        ):
             raise ExcecaoClientes("Cliente já cadastrado")
+        elif (
+            cpf in dados_bd["bd_clientes"] and not dados_bd["bd_clientes"][cpf]["ativo"]
+        ):
+            dados_bd["bd_clientes"][cpf]["ativo"] = True
+            salvar_arquivo(dados_bd)
+            return "Cliente reativado"
         else:
             dados_bd["bd_clientes"][cpf] = {
                 "nome": nome,
                 "data_nascimento": data_nascimento,
+                "ativo": self.ativo,
             }
             salvar_arquivo(dados_bd)
             self.buscar_cliente(cpf)
             return "Cliente cadastrado com sucesso"
 
-    def relatorio_clientes(self) -> list[dict[str,str]]:
+    def excluir_cliente(self, cpf: str) -> str:
         dados_bd = ler_arquivo()
-        clientes = [{"cpf": key, **value} for key, value in dados_bd["bd_clientes"].items()]
+        cpf = self.valida_cpf(cpf)
+        if cpf not in dados_bd["bd_clientes"]:
+            raise ExcecaoClientes("Cliente não localizado")
+        elif (
+            cpf in dados_bd["bd_clientes"]
+            and dados_bd["bd_clientes"][cpf]
+            and not dados_bd["bd_clientes"][cpf]["ativo"]
+        ):
+            raise ExcecaoClientes("Cliente já está inativo")
+        elif (
+            cpf in dados_bd["bd_clientes"]
+            and dados_bd["bd_clientes"][cpf]
+            and dados_bd["bd_clientes"][cpf]["ativo"]
+        ):
+            dados_bd["bd_clientes"][cpf]["ativo"] = False
+            salvar_arquivo(dados_bd)
+            return "Cliente excluido"
+        else:
+            raise ExcecaoClientes("Erro desconhecido (excluir_cliente)")
+
+    def relatorio_clientes(self) -> List[Dict[str, str]]:
+        dados_bd = ler_arquivo()
+        clientes = [
+            {"cpf": key, **value} for key, value in dados_bd["bd_clientes"].items()
+        ]
         funcao_sort = lambda x: x["nome"]
         clientes.sort(key=funcao_sort)
         return clientes
