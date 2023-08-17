@@ -251,11 +251,7 @@ class MedicamentosQuimioterapicos(Medicamentos):
                 laboratorio = preencher_laboratório(medicamento["laboratorio"])
                 medicamento["laboratorio"] = laboratorio["nome"]
                 lista_medicamentos_quimioterapicos.append({"id": id, **medicamento})
-        # lista_medicamentos_quimioterapicos = [
-        #     {"id": id, **medicamento}
-        #     for id, medicamento in dados_medicamentos.items()
-        #     if "necessita_receita" in medicamento
-        # ]
+
         if len(lista_medicamentos_quimioterapicos) > 0:
             return lista_medicamentos_quimioterapicos
         else:
@@ -275,11 +271,7 @@ class MedicamentosFitoterapicos(Medicamentos):
                 laboratorio = preencher_laboratório(medicamento["laboratorio"])
                 medicamento["laboratorio"] = laboratorio["nome"]
                 lista_medicamentos_fitoterapicos.append({"id": id, **medicamento})
-        # lista_medicamentos_fitoterapicos = [
-        #     {"id": id, **medicamento}
-        #     for id, medicamento in dados_medicamentos.items()
-        #     if not "necessita_receita" in medicamento
-        # ]
+
         if len(lista_medicamentos_fitoterapicos) > 0:
             return lista_medicamentos_fitoterapicos
         else:
