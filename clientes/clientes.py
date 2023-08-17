@@ -62,12 +62,12 @@ class Clientes:
             and dados_bd["bd_clientes"][cpf]
             and dados_bd["bd_clientes"][cpf]["ativo"]
         ):
-            cliente = dados_bd["bd_clientes"][cpf]
-            self.nome = cliente["nome"]
+            dict_cliente = dados_bd["bd_clientes"][cpf]
+            self.nome = dict_cliente["nome"]
             self.cpf = cpf
-            self.data_nascimento = cliente["data_nascimento"]
-            self.ativo = cliente["ativo"]
-            return {"cpf": cpf, **cliente}
+            self.data_nascimento = dict_cliente["data_nascimento"]
+            self.ativo = dict_cliente["ativo"]
+            return {"cpf": self.cpf, **dict_cliente}
         else:
             raise ExcecaoClientes("Cliente não localizado.")
 
@@ -116,7 +116,7 @@ class Clientes:
             salvar_arquivo(dados_bd)
             return "Cliente excluido"
         else:
-            pass
+            raise ExcecaoClientes("Erro desconhecido (excluir_cliente)")
 
     def relatorio_clientes(self) -> List[Dict[str, str]]:
         dados_bd = ler_arquivo()
