@@ -15,7 +15,7 @@ class Clientes:
         self._nome = None
         self._cpf = None
         self._data_nascimento = None
-        self._ativo = None
+        self._ativo = True
 
     def valida_cpf(self, cpf):
         cpf = re.sub(r"[!@#$%^&*-. ]", "", str(cpf)).zfill(11)
@@ -48,7 +48,7 @@ class Clientes:
     data_nascimento = property(_get_data_nascimento, _set_data_nascimento)
 
     def _get_ativo(self) -> bool:
-        return datetime.strftime(self._ativo, "%d/%m/%Y")
+        return self._ativo
 
     def _set_ativo(self, ativo: bool) -> None:
         self._ativo = ativo
@@ -90,7 +90,7 @@ class Clientes:
             dados_bd["bd_clientes"][cpf] = {
                 "nome": nome,
                 "data_nascimento": data_nascimento,
-                "ativo": True,
+                "ativo": self.ativo,
             }
             salvar_arquivo(dados_bd)
             self.buscar_cliente(cpf)
