@@ -1,10 +1,8 @@
-from banco_dados.db import banco_dados
-
-bd_laboratorios = banco_dados["bd_laboratorios"]
+from module.module import ler_arquivo, salvar_arquivo
 
 
-class LaboratorioJaCadastrado(Exception):
-    def __init__(self, mensagem: str = "Laboratorio já cadastrado"):
+class ExcessaoLaboratorios(Exception):
+    def __init__(self, mensagem: str):
         self._erro = mensagem
         super().__init__(self._erro)
 
@@ -67,6 +65,8 @@ class Laboratorios:
     estado = property(_get_estado, _set_estado)
 
     def buscar_laboratorio(self, cnpj: str) -> dict:
+        bd = ler_arquivo()
+        bd_laboratorios = bd["bd_laboratorios"]
         if cnpj in bd_laboratorios and bd_laboratorios[cnpj]:
             laboratorio = bd_laboratorios[cnpj]
             self.cnpj = cnpj
@@ -88,8 +88,10 @@ class Laboratorios:
         cidade: str,
         estado: str,
     ) -> None:
+        bd = ler_arquivo()
+        bd_laboratorios = bd["bd_laboratorios"]
         if cnpj in bd_laboratorios:
-            raise LaboratorioJaCadastrado()
+            raise ExcessaoLaboratorios("laboratório já cadastrado")
         else:
             bd_laboratorios[cnpj] = {
                 "nome": nome,
@@ -98,5 +100,7 @@ class Laboratorios:
                 "cidade": cidade,
                 "estado": estado,
             }
+            bd["bd_laboratorios"] = bd_laboratorios
+            salvar_arquivo(bd)
             self.buscar_laboratorio(cnpj)
             return "Laboratorio cadastrado com sucesso"
