@@ -45,3 +45,27 @@ class Vendas:
         self._valor_total = valor_total
 
     valor_total = property(_get_valor_total, _set_valor_total)
+
+    def alerta_quimioterapicos(self._produto, necessita_receita):
+        if necessita_receita:
+            print(f"Por favor verifique a receita do cliente para o medicamento {self._produto._get_nome()}")
+
+    def desconto_idoso(self):
+        data_nascimento_cliente = self._cliente.data_nascimento
+        idade = (datetime.now() - datetime.strptime(data_nascimento_cliente, "%d/%m/%Y")).days // 365
+
+        if idade > 65:
+            self.valor_total *= 0.8
+
+    def desconto_geral(self):
+        valor_minimo = 150.00
+        if self.valor_total > valor_minimo:
+            self.valor_total *= 0.85
+
+    def melhor_desconto(self):
+        desconto_idoso_aplicado = self.valor_total.desconto_idoso()
+        desconto_geral_aplicado = self.valor_total.desconto_geral()
+        if desconto_idoso_aplicado < desconto_geral_aplicado:
+            self.valor_total = desconto_idoso_aplicado
+        else:
+            self.valor_total = desconto_geral_aplicado
