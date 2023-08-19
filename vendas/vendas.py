@@ -55,13 +55,11 @@ class Vendas:
     
     def cadastro_vendas(self, 
                         medicamento: Medicamentos, 
-                        qnt_venda: int, 
-                        cliente: str) -> None:
+                        qnt_venda: int) -> None:
         # busca dados
         dados_bd = ler_arquivo()
 
-        # busca medicamentos
-        bd_medicamentos = dados_bd['bd_medicamentos']
+        # utiliza id medicamento
         id_medicamento = medicamento.id
 
         # verifica qnt estoque
@@ -72,12 +70,19 @@ class Vendas:
         venda_produto = {
             "id_produto": medicamento.id,
             "qtde_venda": qnt_venda,
-            "sub_total": qnt_venda * medicamento.preco
+            "sub_total" : qnt_venda * medicamento.preco
         }
 
         # adiciona na lista produtos
         self.produtos = venda_produto
         # bd_medicamentos[id_medicamento]['quantidade_estoque'] -= qnt_venda
+
+
+    def encerra_venda(self):
+        dados_bd = ler_arquivo()
+
+        # busca medicamentos
+        bd_medicamentos = dados_bd['bd_medicamentos']
         dados_bd['bd_medicamentos'] = bd_medicamentos
 
         # verifica quantidade de vendas existentes
@@ -91,12 +96,11 @@ class Vendas:
         dados_bd['bd_vendas'][qnt_vendas] = {
             "data_hora": self.data_hora,
             "produtos_vendidos": self._produtos,
-            "cliente": cliente.cpf,
-            "valor_total": round(reduce(lambda soma, valor: soma + valor, [venda_produto['sub_total']], 0), 2)
+            "cliente": self.cpf_cliente,
+            "valor_total": round(reduce(lambda soma, valor: soma + valor['sub_total'], self.produtos, 0), 2)
         }
 
         salvar_arquivo(dados_bd)
-
 
         
 
