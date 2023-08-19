@@ -240,7 +240,7 @@ class MedicamentosQuimioterapicos(Medicamentos):
             if dados_medicamentos[id]["necessita_receita"]:
                 response[
                     "mensagem"
-                ] = f'o medicamento {dados_medicamentos[id]["nome"]} é controlado. Verificou a receita com o cliente?'
+                ] = f'o medicamento {dados_medicamentos[id]["nome"]} é controlado. Verifique a receita com o cliente.'
             return response
         else:
             raise ExcecaoMedicamentos("Medicamento não localizado")

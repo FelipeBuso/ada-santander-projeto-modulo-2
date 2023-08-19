@@ -77,7 +77,7 @@ class Laboratorios:
 
             return {"cnpj": cnpj, **laboratorio}
         else:
-            return "Laboratório não localizado"
+            raise ExcessaoLaboratorios("Laboratório não localizado")
 
     def cadastrar_laboratorio(
         self,
