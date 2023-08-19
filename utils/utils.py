@@ -84,7 +84,7 @@ def gerar_relatorio_diario(data_inicial: str) -> Dict:
     relatorio_vendas["remedio_mais_vendido"] = {
         "nome": medicamento_maior_venda["nome"],
         "qtde_vendida": maior_qtde_venda[1]["qtde_vendida"],
-        "total_vendido": maior_qtde_venda[1]["total_venda"],
+        "total_vendido": round(maior_qtde_venda[1]["total_venda"], 2),
     }
     relatorio_vendas["clientes_atendidos"] = len(set(clientes_atendidos))
     relatorio_vendas["vendas_quimioterapicos"] = dicionario_vendas[
