@@ -15,6 +15,7 @@ class Vendas:
         self._data_hora = datetime.now().strftime('%d/%m/%Y %H:%M')
         self._produtos = []
         self.cpf_cliente = cliente.cpf
+        self._idade_cliente = (datetime.now() - datetime.strptime(cliente.data_nascimento, "%d/%m/%Y")).days / 365
         self._valor_total = None
     
     # get e set para data e hora
@@ -35,7 +36,7 @@ class Vendas:
     
     produtos = property(_get_produtos, _set_produtos)
     
-    # get e set para cliente
+    # get e set para cpf do cliente
     def _get_cpf_cliente(self) -> str:
         return self.cpf_cliente
     
@@ -43,6 +44,15 @@ class Vendas:
         self.cpf_cliente = cpf_cliente
     
     cliente = property(_get_cpf_cliente, _set_cpf_cliente)
+
+    # get e set para idade do cliente
+    def _get_idade_cliente(self) -> int:
+        return self._idade_cliente
+    
+    def _set_idade_cliente(self, idade_cliente) -> None:
+        self._idade_cliente = idade_cliente
+
+    idade_cliente = property(_get_idade_cliente, _set_idade_cliente)
 
     # get e set para venda total
     def _get_valor_total(self) -> float:
@@ -93,23 +103,20 @@ class Vendas:
             dados_bd['bd_vendas'] = {qnt_vendas: {}} # adiciona número da venda
 
         # adiciona venda com dados de produto e cliente
-        dados_bd['bd_vendas'][qnt_vendas] = {
+        obj_venda = {
             "data_hora": self.data_hora,
             "produtos_vendidos": self._produtos,
             "cliente": self.cpf_cliente,
             "valor_total": round(reduce(lambda soma, valor: soma + valor['sub_total'], self.produtos, 0), 2)
         }
 
+        # verifica desconto na venda
+        if self.idade_cliente > 65:
+            obj_venda["valor_total"] = round(obj_venda["valor_total"] * 0.8, 2)
+        
+        elif obj_venda["valor_total"] > 150:
+            obj_venda["valor_total"] = round(obj_venda["valor_total"] * 0.9, 2)
+        
+        # adiciona venda no arquivo json
+        dados_bd['bd_vendas'][qnt_vendas] = obj_venda
         salvar_arquivo(dados_bd)
-
-        
-
-    # efetua venda
-        # é idoso?
-            # idosos: 20% desconto
-
-        # qual valor da compra?
-            # compras > 150 reais: 10% desconto
-        
-        # houve +1 desconto?
-            # verifica maior desconto
