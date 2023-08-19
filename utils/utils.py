@@ -8,36 +8,7 @@ class ExcecaoDocumentos(Exception):
         super().__init__(self._erro)
 
 
-def preencher_cliente(id: str) -> Dict:
-    bd_dados = ler_arquivo()
-    bd_clientes = bd_dados["bd_clientes"]
-
-    if id in bd_clientes and bd_clientes[id]:
-        return bd_clientes[id]
-    else:
-        raise ExcecaoDocumentos("Cliente não localizado")
-
-
-def preencher_laboratório(id: str) -> Dict:
-    bd_dados = ler_arquivo()
-    bd_laboratorios = bd_dados["bd_laboratorios"]
-
-    if id in bd_laboratorios and bd_laboratorios[id]:
-        return bd_laboratorios[id]
-    else:
-        raise ExcecaoDocumentos("Laboratorio não localizado")
-
-
-def preencher_medicamento(id: str) -> Dict:
-    bd_dados = ler_arquivo()
-    bd_medicamentos = bd_dados["bd_medicamentos"]
-
-    if id in bd_medicamentos and bd_medicamentos[id]:
-        return bd_medicamentos[id]
-    else:
-        raise ExcecaoDocumentos("Medicamento não localizado")
-
-
+# Lẽ o arquivo db.json, filtra a coleção e retorna o documento pelo id.
 def preencher_documento(id: str, collection: str) -> Dict:
     bd_dados = ler_arquivo()
     bd_collection = bd_dados[collection]
@@ -46,3 +17,79 @@ def preencher_documento(id: str, collection: str) -> Dict:
         return bd_collection[id]
     else:
         raise ExcecaoDocumentos("Documento não localizado")
+
+
+# Filtra as informações de vendas do banco de dados e rotorna um dicionario com as informações do relatório
+def gerar_relatorio_diario(data_inicial: str) -> Dict:
+    bd_dados = ler_arquivo()
+    bd_vendas = bd_dados["bd_vendas"]
+    clientes_atendidos = list()
+    relatorio_vendas = dict()
+
+    # filtra as vendas pela data parâmetro
+    vendas_filtradas = [
+        venda for venda in bd_vendas.values() if venda["data_venda"] >= data_inicial
+    ]
+
+    dicionario_vendas = {
+        "produto_geral": {},
+        "produto_quimioterapico": {"qtde_vendida": 0, "total_vendido": 0},
+        "produto_fitoterapico": {"qtde_vendida": 0, "total_vendido": 0},
+    }
+
+    # Percorre os itens vendidos para cálculo de quantidade e valores
+    for item in vendas_filtradas:
+        clientes_atendidos.append(item["id_cliente"])
+        for item_medicamento in item["produtos"]:
+            id = item_medicamento["id_produto"]
+            medicamento = preencher_documento(id=id, collection="bd_medicamentos")
+            # verifica se o produto já existe no dicionario e atualiza ou incrementa os valores
+            if id in dicionario_vendas["produto_geral"]:
+                dicionario_vendas["produto_geral"][id][
+                    "qtde_vendida"
+                ] += item_medicamento["qtde_venda"]
+                dicionario_vendas["produto_geral"][id][
+                    "total_venda"
+                ] += item_medicamento["sub_total"]
+            else:
+                dicionario_vendas["produto_geral"][id] = {
+                    "qtde_vendida": item_medicamento["qtde_venda"],
+                    "total_venda": item_medicamento["sub_total"],
+                }
+            # Incrementa a quantidade e valores por tipo de medicmaneto
+            if "necessita_receita" in medicamento:
+                dicionario_vendas["produto_quimioterapico"][
+                    "qtde_vendida"
+                ] += item_medicamento["qtde_venda"]
+                dicionario_vendas["produto_quimioterapico"][
+                    "total_vendido"
+                ] += item_medicamento["sub_total"]
+            else:
+                dicionario_vendas["produto_fitoterapico"][
+                    "qtde_vendida"
+                ] += item_medicamento["qtde_venda"]
+                dicionario_vendas["produto_fitoterapico"][
+                    "total_vendido"
+                ] += item_medicamento["sub_total"]
+
+    # Retorna o produto com maior número de unidades vendidas
+    maior_qtde_venda = max(
+        [venda for venda in dicionario_vendas["produto_geral"].items()],
+        key=lambda x: x[1]["qtde_vendida"],
+    )
+    medicamento_maior_venda = preencher_documento(
+        id=maior_qtde_venda[0], collection="bd_medicamentos"
+    )
+
+    relatorio_vendas["remedio_mais_vendido"] = {
+        "nome": medicamento_maior_venda["nome"],
+        "qtde_vendida": maior_qtde_venda[1]["qtde_vendida"],
+        "total_vendido": maior_qtde_venda[1]["total_venda"],
+    }
+    relatorio_vendas["clientes_atendidos"] = len(set(clientes_atendidos))
+    relatorio_vendas["vendas_quimioterapicos"] = dicionario_vendas[
+        "produto_quimioterapico"
+    ]
+    relatorio_vendas["vendas_fitoterapicos"] = dicionario_vendas["produto_fitoterapico"]
+
+    return relatorio_vendas
