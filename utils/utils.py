@@ -36,3 +36,13 @@ def preencher_medicamento(id: str) -> Dict:
         return bd_medicamentos[id]
     else:
         raise ExcecaoDocumentos("Medicamento não localizado")
+
+
+def preencher_documento(id: str, collection: str) -> Dict:
+    bd_dados = ler_arquivo()
+    bd_collection = bd_dados[collection]
+
+    if id in bd_collection and bd_collection[id]:
+        return bd_collection[id]
+    else:
+        raise ExcecaoDocumentos("Documento não localizado")

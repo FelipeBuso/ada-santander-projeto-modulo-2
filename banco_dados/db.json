@@ -113,5 +113,29 @@
       "quantidade_estoque": 10.0,
       "necessita_receita": true
     }
+  },
+  "bd_vendas": {
+    "1": {
+      "id_cliente": "55702383524",
+      "data_venda": "datetime",
+      "valor_total": "float",
+      "produtos": [
+        {
+          "id_produto": "medicamento.id",
+          "qtde_venda": "qtde_venda",
+          "sub_total": "qtde_venda * medicamento.preco"
+        },
+        {
+          "id_produto": "medicamento.id",
+          "qtde_venda": "qtde_venda",
+          "sub_total": "qtde_venda * medicamento.preco"
+        },
+        {
+          "id_produto": "medicamento.id",
+          "qtde_venda": "qtde_venda",
+          "sub_total": "qtde_venda * medicamento.preco"
+        }
+      ]
+    }
   }
 }
