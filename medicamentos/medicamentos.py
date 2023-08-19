@@ -1,6 +1,7 @@
 from module.module import ler_arquivo, salvar_arquivo
 from laboratorios.laboratorios import Laboratorios
 from typing import Dict, List
+from utils.utils import preencher_documento
 
 
 class ExcecaoMedicamentos(Exception):
@@ -118,6 +119,7 @@ class Medicamentos:
                 "necessita_receita": False,
                 "medicamento": dados_medicamentos[id],
             }
+            return response
         else:
             raise ExcecaoMedicamentos("Medicamento não localizado")
 
@@ -162,9 +164,14 @@ class Medicamentos:
     def lista_todos_medicamentos(self) -> List[Dict[str, str]]:
         dados_bd = ler_arquivo()
         dados_medicamentos = dados_bd["bd_medicamentos"]
-        lista_medicamentos = [
-            {"id": id, **medicamento} for id, medicamento in dados_medicamentos.items()
-        ]
+        lista_medicamentos = []
+        for id, medicamento in dados_medicamentos.items():
+            laboratorio = preencher_documento(
+                medicamento["laboratorio"], "bd_laboratorios"
+            )
+            medicamento["laboratorio"] = laboratorio["nome"]
+            lista_medicamentos.append({"id": id, **medicamento})
+
         if len(lista_medicamentos) > 0:
             funcao_sort = lambda x: x["nome"]
             lista_medicamentos.sort(key=funcao_sort)
@@ -241,11 +248,15 @@ class MedicamentosQuimioterapicos(Medicamentos):
     def lista_medicamentos(self) -> List[Dict[str, str]]:
         dados_bd = ler_arquivo()
         dados_medicamentos = dados_bd["bd_medicamentos"]
-        lista_medicamentos_quimioterapicos = [
-            {"id": id, **medicamento}
-            for id, medicamento in dados_medicamentos.items()
-            if "necessita_receita" in medicamento
-        ]
+        lista_medicamentos_quimioterapicos = []
+        for id, medicamento in dados_medicamentos.items():
+            if "necessita_receita" in medicamento:
+                laboratorio = preencher_documento(
+                    medicamento["laboratorio"], "bd_laboratorios"
+                )
+                medicamento["laboratorio"] = laboratorio["nome"]
+                lista_medicamentos_quimioterapicos.append({"id": id, **medicamento})
+
         if len(lista_medicamentos_quimioterapicos) > 0:
             return lista_medicamentos_quimioterapicos
         else:
@@ -259,11 +270,15 @@ class MedicamentosFitoterapicos(Medicamentos):
     def lista_medicamentos(self) -> List[Dict[str, str]]:
         dados_bd = ler_arquivo()
         dados_medicamentos = dados_bd["bd_medicamentos"]
-        lista_medicamentos_fitoterapicos = [
-            {"id": id, **medicamento}
-            for id, medicamento in dados_medicamentos.items()
-            if not "necessita_receita" in medicamento
-        ]
+        lista_medicamentos_fitoterapicos = []
+        for id, medicamento in dados_medicamentos.items():
+            if not "necessita_receita" in medicamento:
+                laboratorio = preencher_documento(
+                    medicamento["laboratorio"], "bd_laboratorios"
+                )
+                medicamento["laboratorio"] = laboratorio["nome"]
+                lista_medicamentos_fitoterapicos.append({"id": id, **medicamento})
+
         if len(lista_medicamentos_fitoterapicos) > 0:
             return lista_medicamentos_fitoterapicos
         else:

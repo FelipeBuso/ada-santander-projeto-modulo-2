@@ -117,23 +117,42 @@
   "bd_vendas": {
     "1": {
       "id_cliente": "55702383524",
-      "data_venda": "datetime",
+      "data_venda": "19/08/2023 08:05",
+      "valor_total": 156.99,
+      "produtos": [
+        {
+          "id_produto": "2",
+          "qtde_venda": 1,
+          "sub_total": 93.98
+        },
+        {
+          "id_produto": "1",
+          "qtde_venda": 1,
+          "sub_total": 63.01
+        }
+      ]
+    },
+    "2": {
+      "id_cliente": "77542415603",
+      "data_venda": "19/08/2023 09:30",
+      "valor_total": 119.85,
+      "produtos": [
+        {
+          "id_produto": "1",
+          "qtde_venda": 3,
+          "sub_total": 119.85
+        }
+      ]
+    },
+    "3": {
+      "id_cliente": "77542415603",
+      "data_venda": "19/08/2023 14:15",
       "valor_total": "float",
       "produtos": [
         {
-          "id_produto": "medicamento.id",
-          "qtde_venda": "qtde_venda",
-          "sub_total": "qtde_venda * medicamento.preco"
-        },
-        {
-          "id_produto": "medicamento.id",
-          "qtde_venda": "qtde_venda",
-          "sub_total": "qtde_venda * medicamento.preco"
-        },
-        {
-          "id_produto": "medicamento.id",
-          "qtde_venda": "qtde_venda",
-          "sub_total": "qtde_venda * medicamento.preco"
+          "id_produto": "3",
+          "qtde_venda": 1,
+          "sub_total": 39.95
         }
       ]
     }

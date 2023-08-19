@@ -40,9 +40,9 @@ class Clientes:
     cpf = property(_get_cpf, _set_cpf)
 
     def _get_data_nascimento(self) -> str:
-        return datetime.strftime(self._data_nascimento, "%d/%m/%Y")
+        return self._data_nascimento
 
-    def _set_data_nascimento(self, data_nascimento: date) -> None:
+    def _set_data_nascimento(self, data_nascimento: str) -> None:
         self._data_nascimento = data_nascimento
 
     data_nascimento = property(_get_data_nascimento, _set_data_nascimento)
