@@ -28,7 +28,7 @@ def gerar_relatorio_diario(data_inicial: str) -> Dict:
 
     # filtra as vendas pela data parâmetro
     vendas_filtradas = [
-        venda for venda in bd_vendas.values() if venda["data_venda"] >= data_inicial
+        venda for venda in bd_vendas.values() if venda["data_hora"] >= data_inicial
     ]
 
     dicionario_vendas = {
@@ -39,8 +39,8 @@ def gerar_relatorio_diario(data_inicial: str) -> Dict:
 
     # Percorre os itens vendidos para cálculo de quantidade e valores
     for item in vendas_filtradas:
-        clientes_atendidos.append(item["id_cliente"])
-        for item_medicamento in item["produtos"]:
+        clientes_atendidos.append(item["cliente"])
+        for item_medicamento in item["produtos_vendidos"]:
             id = item_medicamento["id_produto"]
             medicamento = preencher_documento(id=id, collection="bd_medicamentos")
             # verifica se o produto já existe no dicionario e atualiza ou incrementa os valores

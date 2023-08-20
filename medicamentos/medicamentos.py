@@ -76,6 +76,15 @@ class Medicamentos:
 
     quantidade_estoque = property(_get_quantidade_estoque, _set_quantidade_estoque)
 
+    def retorna_classe(self, id: str) -> "Medicamentos":
+        medicamento_bd = preencher_documento(id, "bd_medicamentos")
+        if medicamento_bd and "necessita_receita" in medicamento_bd:
+            return MedicamentosQuimioterapicos()
+        elif medicamento_bd and not "necessita_receita" in medicamento_bd:
+            return MedicamentosFitoterapicos()
+        else:
+            raise ExcecaoMedicamentos("Medicamento não localizado")
+
     def cadastrar_medicamento(
         self,
         nome: str,

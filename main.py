@@ -9,7 +9,7 @@ from medicamentos.medicamentos import (
 )
 from vendas.vendas import Vendas
 from unidecode import unidecode
-from utils.utils import gerar_relatorio_diario, preencher_documento, ExcecaoDocumentos
+from utils.utils import gerar_relatorio_diario, ExcecaoDocumentos
 
 menu = """
         ========================================================
@@ -164,20 +164,19 @@ if __name__ == "__main__":
                 while not medicamento_localizado:
                     medicamento_id = input("Informe o ID do medicamento: ")
                     try:
-                        medicamento_bd = preencher_documento(
-                            medicamento_id, "bd_medicamentos"
+                        medicamento_pesquisado = Medicamentos()
+                        medicamento_classe_correta = (
+                            medicamento_pesquisado.retorna_classe(medicamento_id)
                         )
-                        if medicamento_bd and "necessita_receita" in medicamento_bd:
-                            medicamento = MedicamentosQuimioterapicos()
-                        else:
-                            medicamento = MedicamentosFitoterapicos()
-                    except ExcecaoDocumentos:
-                        print("Medicamento não localizado")
+                    except ExcecaoDocumentos as error:
+                        print(str(error))
                         continue
 
                     try:
-                        medicamento_retornado = medicamento.buscar_medicamento(
-                            medicamento_id
+                        medicamento_retornado = (
+                            medicamento_classe_correta.buscar_medicamento(
+                                medicamento_id
+                            )
                         )
                         if "mensagem" in medicamento_retornado:
                             print(medicamento_retornado["mensagem"])
@@ -212,27 +211,27 @@ if __name__ == "__main__":
                 option_relatorio = input(menu_relatorios)
                 print("\n")
 
-                if option == "1":
+                if option_relatorio == "1":
                     cliente = Clientes()
                     print(cliente.relatorio_clientes())
 
-                elif option == "2":
+                elif option_relatorio == "2":
                     medicamento_fitoterapico = MedicamentosFitoterapicos()
                     medicamento_fitoterapico.lista_medicamentos()
 
-                elif option == "3":
+                elif option_relatorio == "3":
                     medicamento_quimioterapico = MedicamentosQuimioterapicos()
                     medicamento_quimioterapico.lista_medicamentos
 
-                elif option == "4":
+                elif option_relatorio == "4":
                     medicamentos = Medicamentos()
                     medicamentos.lista_todos_medicamentos()
 
-                elif option == "5":
+                elif option_relatorio == "5":
                     data_hoje = datetime.strftime(
                         datetime.now().replace(
                             hour=0, minute=0, second=0, microsecond=0
                         ),
                         "%d/%m/%Y %H:%M",
                     )
-                    gerar_relatorio_diario(data_hoje)
+                    print(gerar_relatorio_diario(data_hoje))
