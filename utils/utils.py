@@ -30,6 +30,8 @@ def gerar_relatorio_diario(data_inicial: str) -> Dict:
     vendas_filtradas = [
         venda for venda in bd_vendas.values() if venda["data_hora"] >= data_inicial
     ]
+    if len(vendas_filtradas)==0:
+        raise ExcecaoDocumentos("Não houve vendas nesta data")
 
     dicionario_vendas = {
         "produto_geral": {},

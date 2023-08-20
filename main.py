@@ -38,6 +38,7 @@ menu_relatorios = """
         3-Medicamento quimioterápico
         4-Medicamentos geral
         5-Estatíscas dos atendimentos
+        6-Sair
 
         Selecione uma das opções:
     """
@@ -46,7 +47,8 @@ menu_relatorios = """
 if __name__ == "__main__":
     # lê dados antes de iniciar operações
 
-    while True:
+    cond_init=True
+    while cond_init:
         option = input(menu)
         print("\n")
 
@@ -207,7 +209,8 @@ if __name__ == "__main__":
             venda.encerra_venda()
 
         elif option == "6":
-            while True:
+            condicao=True
+            while condicao:
                 option_relatorio = input(menu_relatorios)
                 print("\n")
 
@@ -228,10 +231,21 @@ if __name__ == "__main__":
                     medicamentos.lista_todos_medicamentos()
 
                 elif option_relatorio == "5":
-                    data_hoje = datetime.strftime(
+                    try:
+                        data_escolhida=input("Digite data do relatorio pretendido: ")
+                        print(gerar_relatorio_diario(data_escolhida))
+                    except ExcecaoDocumentos as e:
+                        print(str(e))
+                        continue
+
+                elif option_relatorio == "6":
+                    condicao=False
+        elif option == "7":
+            data_hoje = datetime.strftime(
                         datetime.now().replace(
                             hour=0, minute=0, second=0, microsecond=0
                         ),
                         "%d/%m/%Y %H:%M",
                     )
-                    print(gerar_relatorio_diario(data_hoje))
+            print(gerar_relatorio_diario(data_hoje))
+            cond_init=False
