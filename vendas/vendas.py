@@ -114,6 +114,7 @@ class Vendas:
         # adiciona na lista produtos
         self.produtos = venda_produto
         dados_bd["bd_medicamentos"][id_medicamento]["quantidade_estoque"] -= qnt_venda
+        salvar_arquivo(dados_bd)
 
     def encerra_venda(self):
         dados_bd = ler_arquivo()
