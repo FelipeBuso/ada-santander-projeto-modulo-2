@@ -216,24 +216,100 @@ if __name__ == "__main__":
 
                 if option_relatorio == "1":
                     cliente = Clientes()
-                    print(cliente.relatorio_clientes())
+                    clientes = cliente.relatorio_clientes()
+                    print(
+                        f"{'cpf':15} {'nome':30} {'Data de nascimento':12}", end="\n\n"
+                    )
+                    for cliente in clientes:
+                        print(
+                            f"{cliente['cpf']:15} {cliente['nome']:30} {cliente['data_nascimento']:12}",
+                            end="\n",
+                        )
 
                 elif option_relatorio == "2":
                     medicamento_fitoterapico = MedicamentosFitoterapicos()
-                    medicamento_fitoterapico.lista_medicamentos()
+                    medicamentos_fitoterapicos = (
+                        medicamento_fitoterapico.lista_medicamentos()
+                    )
+                    print(
+                        f'{"ID":4} {"Nome":30} {"Laboratório":10} {"Preço":6} {"Estoque":6}',
+                        end="\n",
+                    )
+                    for medicamento in medicamentos_fitoterapicos:
+                        print(
+                            f'{medicamento["id"]:4} {medicamento["nome"]:30} {medicamento["laboratorio"]:10} {medicamento["preco"]:6} {medicamento["quantidade_estoque"]:6}',
+                            end="\n",
+                        )
 
                 elif option_relatorio == "3":
                     medicamento_quimioterapico = MedicamentosQuimioterapicos()
                     medicamento_quimioterapico.lista_medicamentos
+                    medicamentos_quimioterapicos = (
+                        medicamento_quimioterapico.lista_medicamentos()
+                    )
+                    print(
+                        f'{"ID":4} {"Nome":30} {"Necessita Receita":25} {"Laboratório":10} {"Preço":6} {"Estoque":6}',
+                        end="\n",
+                    )
+                    for medicamento in medicamentos_quimioterapicos:
+                        print(
+                            f'{medicamento["id"]:4} {medicamento["nome"]:30} { "Sim" if medicamento["necessita_receita"] else "Não":30} {medicamento["laboratorio"]:10} {medicamento["preco"]:6} {medicamento["quantidade_estoque"]:6}',
+                            end="\n",
+                        )
 
                 elif option_relatorio == "4":
                     medicamentos = Medicamentos()
-                    medicamentos.lista_todos_medicamentos()
+                    todos_medicamentos = medicamentos.lista_todos_medicamentos()
+
+                    def aplica_receita(medicamento: dict) -> str:
+                        if (
+                            "necessita_receita" in medicamento
+                            and medicamento["necessita_receita"]
+                        ):
+                            return "Sim"
+                        if (
+                            "necessita_receita" in medicamento
+                            and not medicamento["necessita_receita"]
+                        ):
+                            return "Não"
+                        else:
+                            return "Não se aplica"
+
+                    print(
+                        f'{"ID":4} {"Tipo":15} {"Nome":30} {"Necessita Receita":25} {"Laboratório":10} {"Preço":6} {"Estoque":6}',
+                        end="\n",
+                    )
+
+                    for medicamento in todos_medicamentos:
+                        print(
+                            f'{medicamento["id"]:4} {"Quimioterápico" if "necessita_receita" in medicamento else "Fitoterápico":15} {medicamento["nome"]:30} {aplica_receita(medicamento):25} {medicamento["laboratorio"]:10} {medicamento["preco"]:6} {medicamento["quantidade_estoque"]:6}',
+                            end="\n",
+                        )
 
                 elif option_relatorio == "5":
+                    data_escolhida = input("Digite data do relatorio pretendido: ")
                     try:
-                        data_escolhida = input("Digite data do relatorio pretendido: ")
-                        print(gerar_relatorio_diario(data_escolhida))
+                        estatisticas = gerar_relatorio_diario(data_escolhida)
+                        print("Métricas do dia\n\n")
+                        print(
+                            f'Remédio mais vendido (unidades): {estatisticas["remedio_mais_vendido"]["nome"]}'
+                        )
+                        print(
+                            f'Quantidade vendida: {estatisticas["remedio_mais_vendido"]["qtde_vendida"]}'
+                        )
+                        print(
+                            f'Valor vendido: {round(estatisticas["remedio_mais_vendido"]["total_vendido"],2)}'
+                        )
+                        print(
+                            f'Total de clientes atendidos: {estatisticas["clientes_atendidos"]}'
+                        )
+                        print(
+                            f'Totais de remédios Quimioterápicos - Unidades: {estatisticas["vendas_quimioterapicos"]["qtde_vendida"]} - Valor: {round(estatisticas["vendas_quimioterapicos"]["total_vendido"],2)}'
+                        )
+                        print(
+                            f'Totais de remédios Fitoterápicos - Unidades: {estatisticas["vendas_fitoterapicos"]["qtde_vendida"]} - Valor: {round(estatisticas["vendas_fitoterapicos"]["total_vendido"], 2)}'
+                        )
+
                     except ExcecaoDocumentos as e:
                         print(str(e))
                         continue
@@ -245,5 +321,29 @@ if __name__ == "__main__":
                 datetime.now().replace(hour=0, minute=0, second=0, microsecond=0),
                 "%d/%m/%Y %H:%M",
             )
-            print(gerar_relatorio_diario(data_hoje))
+            try:
+                estatisticas = gerar_relatorio_diario(data_hoje)
+                print("Métricas do dia\n\n")
+                print(
+                    f'Remédio mais vendido (unidades): {estatisticas["remedio_mais_vendido"]["nome"]}'
+                )
+                print(
+                    f'Quantidade vendida: {estatisticas["remedio_mais_vendido"]["qtde_vendida"]}'
+                )
+                print(
+                    f'Valor vendido: {round(estatisticas["remedio_mais_vendido"]["total_vendido"],2)}'
+                )
+                print(
+                    f'Total de clientes atendidos: {estatisticas["clientes_atendidos"]}'
+                )
+                print(
+                    f'Totais de remédios Quimioterápicos - Unidades: {estatisticas["vendas_quimioterapicos"]["qtde_vendida"]} - Valor: {round(estatisticas["vendas_quimioterapicos"]["total_vendido"],2)}'
+                )
+                print(
+                    f'Totais de remédios Fitoterápicos - Unidades: {estatisticas["vendas_fitoterapicos"]["qtde_vendida"]} - Valor: {round(estatisticas["vendas_fitoterapicos"]["total_vendido"], 2)}'
+                )
+
+            except ExcecaoDocumentos as e:
+                print(str(e))
+                continue
             cond_init = False
