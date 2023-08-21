@@ -12,6 +12,30 @@ class ExcecaoVendas(Exception):
 
 
 class Vendas:
+    """
+    Representação de uma venda
+
+    Atributos
+    ---
+    data_hora: datetime
+        Hora do incício do atendimento
+    produtos: list
+        Lista de produtos vendidos
+    cpf_cliente: str
+        CPF do cliente que está efetuando a compra
+    idade_cliente: int
+        Idade calculada do cliente com base na data de nascimento
+    valor_total: float
+        Soma das vendas de produtos
+
+    Métodos
+    ---
+    cadastro_vendas:
+        Insere nova venda de produto.
+    encerra_venda:
+        Finaliza o atendimento
+    """
+
     def __init__(self, cliente: Clientes):
         self._data_hora = datetime.now().strftime("%d/%m/%Y %H:%M")
         self._produtos = []
@@ -90,6 +114,7 @@ class Vendas:
         # adiciona na lista produtos
         self.produtos = venda_produto
         dados_bd["bd_medicamentos"][id_medicamento]["quantidade_estoque"] -= qnt_venda
+        salvar_arquivo(dados_bd)
 
     def encerra_venda(self):
         dados_bd = ler_arquivo()

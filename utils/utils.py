@@ -21,6 +21,9 @@ def preencher_documento(id: str, collection: str) -> Dict:
 
 # Filtra as informações de vendas do banco de dados e rotorna um dicionario com as informações do relatório
 def gerar_relatorio_diario(data_inicial: str) -> Dict:
+    """
+    Retorna um relatório de estatísticas de atendimento a partir da data informada até o fechamento
+    """
     bd_dados = ler_arquivo()
     bd_vendas = bd_dados["bd_vendas"]
     clientes_atendidos = list()
@@ -30,7 +33,7 @@ def gerar_relatorio_diario(data_inicial: str) -> Dict:
     vendas_filtradas = [
         venda for venda in bd_vendas.values() if venda["data_hora"] >= data_inicial
     ]
-    if len(vendas_filtradas)==0:
+    if len(vendas_filtradas) == 0:
         raise ExcecaoDocumentos("Não houve vendas nesta data")
 
     dicionario_vendas = {
