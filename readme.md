@@ -14,4 +14,6 @@
 
 ### Usando o sistema
 
-entrar em `projeto.ipynb`
+digite na raiz do projeto:
+<br/>
+`python3 main.py`
