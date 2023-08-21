@@ -11,6 +11,32 @@ class ExcecaoClientes(Exception):
 
 
 class Clientes:
+    """
+    Classe que representa um cliente
+    ...
+
+    Atributos
+    ---
+    cpf: str
+        CPF do cliente com 11 dígitos
+    nome: str
+        Nome completo do cliente
+    data de nascimento: str
+        Data de nascimento no formato dd/mm/yyyy
+    ativo: bool
+
+    Métodos
+    ---
+    buscar_cliente:
+        Retorna os dados do cliente para a instância
+    cadastrar_cliente:
+        Cadastra o cliente no banco de dados
+    excluir_cliente:
+        Altera a chave ativo no banco de dados
+    relatorio_clientes:
+        retorna um lista de clientes
+    """
+
     def __init__(self):
         self._nome = None
         self._cpf = None
@@ -18,6 +44,9 @@ class Clientes:
         self._ativo = True
 
     def valida_cpf(self, cpf):
+        """
+        Valida se o cpf é contem somente números e preenche com 0 à esquerda
+        """
         cpf = re.sub(r"[!@#$%^&*-. ]", "", str(cpf)).zfill(11)
         if not cpf.isdigit() or len(cpf) > 11:
             raise ValueError("CPF inválido")
@@ -56,6 +85,11 @@ class Clientes:
     ativo = property(_get_ativo, _set_ativo)
 
     def buscar_cliente(self, cpf: str) -> Dict[str, str]:
+        """
+        Busca um cliente no banco de dados pelo CPF
+
+        Caso não exista, lança um exceção do tipo "ExcecaoClientes"
+        """
         dados_bd = ler_arquivo()
         if (
             cpf in dados_bd["bd_clientes"]
@@ -72,6 +106,11 @@ class Clientes:
             raise ExcecaoClientes("Cliente não localizado.")
 
     def cadastrar_cliente(self, nome: str, cpf: str, data_nascimento: str) -> str:
+        """
+        Cadastra o cliente no banco de dados.
+
+        Caso o cpf já exista no banco de dados, lança um exceção do tipo "ExcecaoClientes"
+        """
         dados_bd = ler_arquivo()
         cpf = self.valida_cpf(cpf)
         if (
@@ -97,6 +136,12 @@ class Clientes:
             return "Cliente cadastrado com sucesso"
 
     def excluir_cliente(self, cpf: str) -> str:
+        """
+        Localiza o cpf no banco de dados e atualiza a chave "ativo" para false
+
+        Caso cliente já esteja inativo ou não seja localizado, lança uma exceção
+        do tipo "ExcecaoClientes"
+        """
         dados_bd = ler_arquivo()
         cpf = self.valida_cpf(cpf)
         if cpf not in dados_bd["bd_clientes"]:
@@ -119,6 +164,9 @@ class Clientes:
             raise ExcecaoClientes("Erro desconhecido (excluir_cliente)")
 
     def relatorio_clientes(self) -> List[Dict[str, str]]:
+        """
+        Retorna lista de clientes, em ordem crescente, pela chave nome.
+        """
         dados_bd = ler_arquivo()
         clientes = [
             {"cpf": key, **value} for key, value in dados_bd["bd_clientes"].items()
