@@ -47,7 +47,7 @@ menu_relatorios = """
 if __name__ == "__main__":
     # lê dados antes de iniciar operações
 
-    cond_init=True
+    cond_init = True
     while cond_init:
         option = input(menu)
         print("\n")
@@ -95,7 +95,7 @@ if __name__ == "__main__":
             medicamento_fitoterapico.cadastrar_medicamento(
                 nome=nome,
                 principio_ativo=principio_ativo,
-                laboratorio_cnpj=laboratorio_cnpj,
+                laboratorio=laboratorio,
                 descricao=descricao,
                 preco=preco,
                 quantidade_estoque=quantidade_estoque,
@@ -190,7 +190,7 @@ if __name__ == "__main__":
                 qtde_venda = float(input("informe a quantidade desejada: "))
 
                 venda.cadastro_vendas(
-                    medicamento=medicamento,
+                    medicamento=medicamento_classe_correta,
                     qnt_venda=qtde_venda,
                 )
                 verifica_nova_venda = True
@@ -209,7 +209,7 @@ if __name__ == "__main__":
             venda.encerra_venda()
 
         elif option == "6":
-            condicao=True
+            condicao = True
             while condicao:
                 option_relatorio = input(menu_relatorios)
                 print("\n")
@@ -232,20 +232,18 @@ if __name__ == "__main__":
 
                 elif option_relatorio == "5":
                     try:
-                        data_escolhida=input("Digite data do relatorio pretendido: ")
+                        data_escolhida = input("Digite data do relatorio pretendido: ")
                         print(gerar_relatorio_diario(data_escolhida))
                     except ExcecaoDocumentos as e:
                         print(str(e))
                         continue
 
                 elif option_relatorio == "6":
-                    condicao=False
+                    condicao = False
         elif option == "7":
             data_hoje = datetime.strftime(
-                        datetime.now().replace(
-                            hour=0, minute=0, second=0, microsecond=0
-                        ),
-                        "%d/%m/%Y %H:%M",
-                    )
+                datetime.now().replace(hour=0, minute=0, second=0, microsecond=0),
+                "%d/%m/%Y %H:%M",
+            )
             print(gerar_relatorio_diario(data_hoje))
-            cond_init=False
+            cond_init = False
