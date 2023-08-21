@@ -8,6 +8,33 @@ class ExcessaoLaboratorios(Exception):
 
 
 class Laboratorios:
+    """
+    Classe que representa um Laboratório
+    ...
+
+    Atributos
+    ---
+    cnpj: str
+        CNPJ da laboratório com 14 dígitos
+    nome: str
+        Razão social da laboratório
+    endereço: str
+        Endereço da laboratório
+    telefone: str
+        Telefone da laboratório. Somente números.
+    cidadee: str
+        Cidade onde se localiza a laboratório.
+    telefone: str
+        UF da laboratório, com 2 caracteres.
+
+    Métodos
+    ---
+    buscar_cliente:
+        Retorna os dados do laboratório para a instância
+    cadastrar_cliente:
+        Cadastra o laboratório no banco de dados
+    """
+
     def __init__(self):
         self._cnpj = None
         self._nome = None
@@ -65,6 +92,11 @@ class Laboratorios:
     estado = property(_get_estado, _set_estado)
 
     def buscar_laboratorio(self, cnpj: str) -> dict:
+        """
+        Busca um laboratório no banco de dados pelo CNPJ
+
+        Caso não exista, lança um exceção do tipo "ExcecaoLaboratórios"
+        """
         bd = ler_arquivo()
         bd_laboratorios = bd["bd_laboratorios"]
         if cnpj in bd_laboratorios and bd_laboratorios[cnpj]:
@@ -88,6 +120,11 @@ class Laboratorios:
         cidade: str,
         estado: str,
     ) -> None:
+        """
+        Cadastra o laboratório no banco de dados.
+
+        Caso o CNPJ já exista no banco de dados, lança um exceção do tipo "Excecaolaboratorios"
+        """
         bd = ler_arquivo()
         bd_laboratorios = bd["bd_laboratorios"]
         if cnpj in bd_laboratorios:

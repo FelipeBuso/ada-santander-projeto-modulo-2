@@ -11,6 +11,11 @@ class ExcecaoMedicamentos(Exception):
 
 
 class Medicamentos:
+    """
+    Representação do produto vendido
+
+    """
+
     def __init__(self) -> None:
         self._id = None
         self._nome = None
@@ -93,7 +98,12 @@ class Medicamentos:
         descricao: str,
         preco: float,
         quantidade_estoque: float = 0,
-    ):
+    ) -> str:
+        """
+        Cadastra um medicamento no banco de dados.
+
+        Caso exista um medicamento como mesmo nome cadastrado, lança uma exceção do tipo "ExcecaoMedicamentos"
+        """
         dados_bd = ler_arquivo()
         id_medicamento = str(len(dados_bd["bd_medicamentos"]) + 1)
         if dados_bd["bd_medicamentos"]:
@@ -114,6 +124,11 @@ class Medicamentos:
         return "Medicamento cadastrado com sucesso"
 
     def buscar_medicamento(self, id: str) -> Dict:
+        """
+        Busca um medicamento no banco de dados pelo ID
+
+        Caso não exista o medicamento, lança uma exceção do tipo "ExcecaoMedicamentos
+        """
         dados_bd = ler_arquivo()
         dados_medicamentos = dados_bd["bd_medicamentos"]
         if id in dados_medicamentos and dados_medicamentos[id]:
@@ -133,6 +148,12 @@ class Medicamentos:
             raise ExcecaoMedicamentos("Medicamento não localizado")
 
     def pesquisa_medicamento_nome(self, nome: str) -> List[Dict[str, str]]:
+        """
+        Busca um medicamento pelo nome.
+
+        Caso não exista o medicamento, lança uma exceção do tipo "ExcecaoMedicamentos
+        """
+
         dados_bd = ler_arquivo()
         dados_medicamentos = dados_bd["bd_medicamentos"]
         medicamentos_localizados = list()
@@ -147,6 +168,11 @@ class Medicamentos:
     def pesquisa_medicamento_laboratorio(
         self, laboratorio: Laboratorios
     ) -> List[Dict[str, str]]:
+        """
+        Busca medicamento pelo Laboratório.
+
+        Caso não exista nenhum medicamento, lança uma exceção do tipo "ExcecaoMedicamentos
+        """
         dados_bd = ler_arquivo()
         dados_medicamentos = dados_bd["bd_medicamentos"]
         medicamentos_localizados = list()
@@ -159,6 +185,11 @@ class Medicamentos:
             raise ExcecaoMedicamentos("Medicamento não localizado")
 
     def pesquisa_medicamento_descricao(self, descricao: str) -> List[Dict[str, str]]:
+        """
+        Busca um medicamento por termos na descrição.
+
+        Caso não exista nenhum medicamento, lança uma exceção do tipo "ExcecaoMedicamentos
+        """
         dados_bd = ler_arquivo()
         dados_medicamentos = dados_bd["bd_medicamentos"]
         medicamentos_localizados = list()
@@ -171,6 +202,11 @@ class Medicamentos:
             raise ExcecaoMedicamentos("Medicamento não localizado")
 
     def lista_todos_medicamentos(self) -> List[Dict[str, str]]:
+        """
+        Retorna uma lista de medicamentos cadastrados no sistema.
+
+        Caso não exista nenhum medicamento, lança uma exceção do tipo "ExcecaoMedicamentos
+        """
         dados_bd = ler_arquivo()
         dados_medicamentos = dados_bd["bd_medicamentos"]
         lista_medicamentos = []
@@ -190,6 +226,36 @@ class Medicamentos:
 
 
 class MedicamentosQuimioterapicos(Medicamentos):
+    """
+    Classe representação de um medicamento quimioterápico.
+
+    Atributos
+    ---
+    nome : str
+        nome do produto.
+    principio_ativo : str
+        Componente principal do medicamento.
+    laboratorio : Laboratorio
+        Fabricante do medicamento.
+    descricao : str
+        Descrição do medicamento.
+    preco : float
+        Valor de venda do medicamento.
+    quantidade_estoque : float
+        Quantidade de estoque do produto
+    necessita_receita : bool
+        Informa a necessidade de retenção de receita médica.
+
+    Métodos
+    ---
+    cadastrar_medicamento:
+        Cadastra um medicamento no banco de dados
+    buscar_medicamento:
+        Retorna um medicamento
+    lista_medicamentos:
+        Lista todos os medicamentos cadastrados no banco de dados
+    """
+
     def __init__(self) -> None:
         self._necessita_receita = None
         super().__init__()
@@ -209,7 +275,7 @@ class MedicamentosQuimioterapicos(Medicamentos):
         preco: float,
         necessita_receita: bool,
         quantidade_estoque: float = 0,
-    ):
+    ) -> str:
         dados_bd = ler_arquivo()
         id_medicamento = str(len(dados_bd["bd_medicamentos"]) + 1)
         if dados_bd["bd_medicamentos"]:
@@ -255,6 +321,11 @@ class MedicamentosQuimioterapicos(Medicamentos):
             raise ExcecaoMedicamentos("Medicamento não localizado")
 
     def lista_medicamentos(self) -> List[Dict[str, str]]:
+        """
+        Retorna uma lista de medicamentos quimioterápicos cadastrados no sistema.
+
+        Caso não exista nenhum medicamento, lança uma exceção do tipo "ExcecaoMedicamentos
+        """
         dados_bd = ler_arquivo()
         dados_medicamentos = dados_bd["bd_medicamentos"]
         lista_medicamentos_quimioterapicos = []
@@ -273,10 +344,43 @@ class MedicamentosQuimioterapicos(Medicamentos):
 
 
 class MedicamentosFitoterapicos(Medicamentos):
+    """
+    Classe representação de um medicamento fitoterápico.
+
+    Atributos
+    ---
+    nome : str
+        nome do produto.
+    principio_ativo : str
+        Componente principal do medicamento.
+    laboratorio : Laboratorio
+        Fabricante do medicamento.
+    descricao : str
+        Descrição do medicamento.
+    preco : float
+        Valor de venda do medicamento.
+    quantidade_estoque : float
+        Quantidade de estoque do produto
+
+    Métodos
+    ---
+    cadastrar_medicamento:
+        Cadastra um medicamento no banco de dados
+    buscar_medicamento:
+        Retorna um medicamento
+    lista_medicamentos:
+        Lista todos os medicamentos cadastrados no banco de dados
+    """
+
     def __init__(self) -> None:
         super().__init__()
 
     def lista_medicamentos(self) -> List[Dict[str, str]]:
+        """
+        Retorna uma lista de medicamentos fitoterápicos cadastrados no sistema.
+
+        Caso não exista nenhum medicamento, lança uma exceção do tipo "ExcecaoMedicamentos
+        """
         dados_bd = ler_arquivo()
         dados_medicamentos = dados_bd["bd_medicamentos"]
         lista_medicamentos_fitoterapicos = []
